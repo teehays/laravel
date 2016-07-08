@@ -1,5 +1,8 @@
 <?php
 
+use App\Task;
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,22 +14,63 @@
 |
 */
 
+
+//Route::get('/', function () {
+//
+//    $tasks = Task::orderBy('created_at', 'asc')->get();
+//    return view('tasks',['tasks' => $tasks]);
+//});
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Authentication Routes.
+
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration Routes.
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+
 /**
  *Add a new task
  */
-Route::post('/task', function(Request $request ) {    
-   // 
+Route::post('/task', function(Request $request ) {
+    $validator = Validator::make($request->all(),
+                                 ['name'    => 'required|max:255',]);
+    if($validator->fails()) {
+        return redirect('/')
+                ->withInput()
+                ->withErrors($validator);
+    }
+    
+    $task = new Task;
+    $task->name = $request->name;
+    $task->save();
+
+    return redirect('/');
+   
 });
+
+Route::get('/log', function(Request $request ) {
+
+    dump('Hello');
+
+
+
+});
+
 
 /**
  * Delete an existing task
  */
 
- Route::delete('/task/{id}', function($id){
-    //
-    
- });
+ Route::delete('/task/{id}', function ($id) {
+    Task::findOrFail($id)->delete();
+
+    return redirect('/');
+});
