@@ -6,4 +6,5 @@ Homestead.json
 *.komodoproject
 .idea
 *.txt
+.gitignore
 
