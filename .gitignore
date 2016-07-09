@@ -1,5 +1,5 @@
 vendor/*
-!vendor/waazari
+!vendor/waazari/*
 /node_modules
 Homestead.yaml
 Homestead.json
@@ -7,5 +7,3 @@ Homestead.json
 *.komodoproject
 .idea
 *.txt
-.gitignore
-
