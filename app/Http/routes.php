@@ -2,6 +2,8 @@
 
 use App\Task;
 use Illuminate\Http\Request;
+use MySQLHandler\MySQLHandler;
+use DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +59,18 @@ Route::post('/task', function(Request $request ) {
 });
 
 Route::get('/log', function(Request $request ) {
+
+    $pdo = DB::connection()->getPdo();
+    dump($pdo);
+
+    $mySQLHandler = new MySQLHandler($pdo, 'tee_log', array('username', 'userid'), \Monolog\Logger::DEBUG);
+
+    $logger = new \Monolog\Logger('Test');
+    $logger->pushHandler($mySQLHandler);
+
+    //Now you can use the logger, and further attach additional information
+    $logger->addWarning("This is a great message, woohoo!", array('username'  => 'John Doe', 'userid'  => 245));
+
 
     dump('Hello');
 
