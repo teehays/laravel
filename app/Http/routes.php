@@ -63,7 +63,10 @@ Route::get('/log', function(Request $request ) {
     $pdo = DB::connection()->getPdo();
     dump($pdo);
 
-    $mySQLHandler = new MySQLHandler($pdo, 'tee_log', array('username', 'userid'), \Monolog\Logger::DEBUG);
+    $table_data = array('table_name'    => 'MyLog',
+                        'time_type'     => 'DATETIME');
+
+    $mySQLHandler = new MySQLHandler($pdo, $table_data, array('username', 'userid'), \Monolog\Logger::DEBUG);
 
     $logger = new \Monolog\Logger('Test');
     $logger->pushHandler($mySQLHandler);
