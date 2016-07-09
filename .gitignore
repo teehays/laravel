@@ -1,4 +1,5 @@
-/vendor
+vendor/*
+!vendor/waazari
 /node_modules
 Homestead.yaml
 Homestead.json
